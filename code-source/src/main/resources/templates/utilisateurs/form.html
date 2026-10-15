@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nouvel utilisateur - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4" style="max-width: 700px;">
+    <h3 class="mb-3">Ajouter un utilisateur</h3>
+
+    <form th:action="@{/utilisateurs}" th:object="${form}" method="post">
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nom</label>
+                <input type="text" th:field="*{nom}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{nom}"></div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Prénom</label>
+                <input type="text" th:field="*{prenom}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{prenom}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Numéro matricule</label>
+                <input type="text" th:field="*{matricule}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{matricule}"></div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Sexe</label>
+                <select th:field="*{sexe}" class="form-select" th:errorclass="is-invalid">
+                    <option value="">-- Choisir --</option>
+                    <option th:each="s : ${sexes}" th:value="${s}"
+                            th:text="${s.name() == 'M'} ? 'Masculin' : 'Féminin'"></option>
+                </select>
+                <div class="invalid-feedback" th:errors="*{sexe}"></div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Date de naissance</label>
+                <input type="date" th:field="*{dateNaissance}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{dateNaissance}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Identifiant</label>
+                <input type="text" th:field="*{identifiant}" class="form-control" th:errorclass="is-invalid" autocomplete="off">
+                <div class="invalid-feedback" th:errors="*{identifiant}"></div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Rôle</label>
+                <select th:field="*{role}" class="form-select" th:errorclass="is-invalid">
+                    <option th:each="r : ${roles}" th:value="${r}"
+                            th:text="${r.name() == 'GERANT'} ? 'Gérant' : 'Caissier'"></option>
+                </select>
+                <div class="invalid-feedback" th:errors="*{role}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" th:field="*{motDePasse}" class="form-control" th:errorclass="is-invalid" autocomplete="new-password">
+                <div class="invalid-feedback" th:errors="*{motDePasse}"></div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Confirmer le mot de passe</label>
+                <input type="password" th:field="*{confirmation}" class="form-control" th:errorclass="is-invalid" autocomplete="new-password">
+                <div class="invalid-feedback" th:errors="*{confirmation}"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a th:href="@{/utilisateurs}" class="btn btn-outline-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

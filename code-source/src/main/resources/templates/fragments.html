@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="navbar" class="navbar app-navbar">
+    <div class="container-fluid px-4 d-flex flex-wrap align-items-center">
+        <a class="navbar-brand me-4" th:href="@{/}">Boutique</a>
+
+        <ul class="navbar-nav me-auto flex-row flex-wrap gap-1">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri == '/'} ? 'active'" th:href="@{/}">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/produits')} ? 'active'" th:href="@{/produits}">Produits</a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/categories')} ? 'active'" th:href="@{/categories}">Catégories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/achats')} ? 'active'" th:href="@{/achats/nouveau}">Nouvel achat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/livraisons')} ? 'active'" th:href="@{/livraisons/nouveau}">Nouvelle livraison</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/historique')} ? 'active'" th:href="@{/historique}">Historique</a>
+            </li>
+            <li class="nav-item" th:if="${estGerant}">
+                <a class="nav-link" th:classappend="${uri != null and uri.startsWith('/utilisateurs')} ? 'active'" th:href="@{/utilisateurs}">Utilisateurs</a>
+            </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2">
+            <span class="user-chip" th:text="${nomConnecte}">utilisateur</span>
+            <form th:action="@{/logout}" method="post" class="m-0">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Déconnexion</button>
+            </form>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

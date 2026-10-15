@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catégories - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <h3 class="mb-3">Catégories</h3>
+
+    <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Nouvelle catégorie</h5>
+                    <form th:action="@{/categories}" th:object="${categorie}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Nom de la catégorie</label>
+                            <input type="text" th:field="*{nom}" class="form-control" th:errorclass="is-invalid"
+                                   placeholder="Ex. : Boissons" autocomplete="off">
+                            <div class="invalid-feedback" th:errors="*{nom}"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Créer la catégorie</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <table class="table align-middle">
+                <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th class="text-center">Produits</th>
+                    <th class="text-end">Voir</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${categories}">
+                    <td th:text="${c.nom}">Boissons</td>
+                    <td class="text-center">
+                        <span class="badge bg-secondary" th:text="${nbProduits[c.id]}">0</span>
+                    </td>
+                    <td class="text-end">
+                        <a th:href="@{/produits}" class="btn btn-sm btn-outline-secondary">Produits</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(categories)}">
+                    <td colspan="3" class="text-center text-muted">Aucune catégorie.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

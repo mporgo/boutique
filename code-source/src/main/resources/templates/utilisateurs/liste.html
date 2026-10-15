@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Utilisateurs - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Utilisateurs</h3>
+        <a th:href="@{/utilisateurs/nouveau}" class="btn btn-success">+ Ajouter un utilisateur</a>
+    </div>
+
+    <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+    <div th:if="${erreur}" class="alert alert-danger" th:text="${erreur}"></div>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Matricule</th>
+            <th>Sexe</th>
+            <th>Naissance</th>
+            <th>Identifiant</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+            <th class="text-end">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${utilisateurs}">
+            <td th:text="${u.nom}">Nom</td>
+            <td th:text="${u.prenom}">Prénom</td>
+            <td th:text="${u.matricule}">M001</td>
+            <td th:text="${u.sexe}">M</td>
+            <td th:text="${#temporals.format(u.dateNaissance, 'dd/MM/yyyy')}">01/01/1990</td>
+            <td th:text="${u.identifiant}">admin</td>
+            <td th:text="${u.role}">GERANT</td>
+            <td>
+                <span class="badge" th:classappend="${u.actif} ? 'bg-success' : 'bg-secondary'"
+                      th:text="${u.actif} ? 'Actif' : 'Désactivé'">Actif</span>
+            </td>
+            <td class="text-end">
+                <a th:href="@{/utilisateurs/{id}(id=${u.id})}" class="btn btn-sm btn-outline-primary">Détails</a>
+                <form th:if="${u.identifiant != nomConnecte}"
+                      th:action="@{/utilisateurs/{id}/basculer(id=${u.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary"
+                            th:text="${u.actif} ? 'Désactiver' : 'Réactiver'">Désactiver</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Historique - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <h3 class="mb-3">Historique</h3>
+
+    <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="m-0">Achats des clients</h5>
+        <a th:href="@{/achats/nouveau}" class="btn btn-sm btn-success">+ Nouvel achat</a>
+    </div>
+    <table class="table table-striped align-middle mb-5">
+        <thead>
+        <tr>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Produits</th>
+            <th>Caissier</th>
+            <th class="text-end">Total (FCFA)</th>
+            <th class="text-end">Ticket</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${achats}">
+            <td th:text="${a.id}">1</td>
+            <td th:text="${a.dateFormatee}">01/01/2026 10:00</td>
+            <td th:text="${a.client != null} ? ${a.client.nom} : '-'">-</td>
+            <td>
+                <div th:each="l : ${a.lignes}" th:text="${l.produit.nom + ' x ' + l.quantite}">Riz x 2</div>
+            </td>
+            <td th:text="${a.utilisateur.identifiant}">admin</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(a.total, 1, 'WHITESPACE', 0, 'POINT')}">3 000</td>
+            <td class="text-end">
+                <a th:href="@{/achats/{id}/ticket(id=${a.id})}" class="btn btn-sm btn-outline-primary">Ticket</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(achats)}">
+            <td colspan="7" class="text-center text-muted">Aucun achat enregistré.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="m-0">Livraisons des grossistes</h5>
+        <a th:href="@{/livraisons/nouveau}" class="btn btn-sm btn-success">+ Nouvelle livraison</a>
+    </div>
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Grossiste</th>
+            <th>Produits reçus</th>
+            <th>Enregistré par</th>
+            <th class="text-end">Total (FCFA)</th>
+            <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lv : ${livraisons}">
+            <td th:text="${lv.id}">1</td>
+            <td th:text="${lv.dateFormatee}">01/01/2026 10:00</td>
+            <td th:text="${lv.grossiste.nom}">Grossiste</td>
+            <td>
+                <div th:each="l : ${lv.lignes}"
+                     th:text="${l.produit.nom + ' x ' + l.quantite + ' à ' + #numbers.formatDecimal(l.prixAchat, 1, 'WHITESPACE', 0, 'POINT')}">Riz x 10 à 800</div>
+            </td>
+            <td th:text="${lv.utilisateur.identifiant}">admin</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(lv.total, 1, 'WHITESPACE', 0, 'POINT')}">8 000</td>
+            <td class="text-end">
+                <a th:href="@{/livraisons/{id}(id=${lv.id})}" class="btn btn-sm btn-outline-primary">Détails</a>
+                <a th:href="@{/livraisons/{id}/bon(id=${lv.id})}" class="btn btn-sm btn-outline-secondary">Bon</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(livraisons)}">
+            <td colspan="7" class="text-center text-muted">Aucune livraison enregistrée.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

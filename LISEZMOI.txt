@@ -1,0 +1,33 @@
+GESTION D'UNE BOUTIQUE ALIMENTAIRE - Projet applicatif DID
+Auteur : PORGO Moussa
+
+CONTENU
+- boutique.jar        : application exécutable (Spring Boot, Java 17)
+- lancer.bat          : lance l'application sous Windows
+- database/schema.sql : DDL (création de la base "boutique" et des 9 tables)
+- code-source/        : projet Maven complet (src, pom.xml)
+- Rapport             : rapport succinct fourni séparément
+
+PRÉREQUIS
+- Java 17 ou plus récent
+- MySQL ou MariaDB démarré sur localhost:3306 (testé avec XAMPP / MariaDB 10.4)
+
+INSTALLATION ET LANCEMENT
+1. Importer database/schema.sql (phpMyAdmin > Importer, ou : mysql -u root < database/schema.sql).
+2. Lancer lancer.bat (ou : java -jar boutique.jar).
+3. Ouvrir http://localhost:8080.
+
+COMPTE DE DÉPART (créé automatiquement au premier lancement)
+- Identifiant : admin   Mot de passe : admin123   Rôle : gérant
+Le gérant peut ensuite créer d'autres utilisateurs (menu Utilisateurs).
+
+CONFIGURATION DE LA BASE (facultatif)
+Par défaut : utilisateur root, sans mot de passe. Pour changer, avant de lancer :
+  set DB_USER=monuser
+  set DB_PASSWORD=monmotdepasse
+  set DB_URL=jdbc:mysql://localhost:3306/boutique?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
+RECONSTRUIRE LE JAR
+  cd code-source
+  mvn clean package -DskipTests
+  (jar généré dans target/)

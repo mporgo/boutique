@@ -1,0 +1,109 @@
+:root {
+  --c-bg: #f6f7fb;
+  --c-surface: #ffffff;
+  --c-text: #1f2937;
+  --c-muted: #6b7280;
+  --c-border: #e5e7eb;
+  --c-primary: #4f46e5;
+  --c-primary-dark: #4338ca;
+  --c-success: #059669;
+  --c-danger: #dc2626;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 12px rgba(16, 24, 40, .06);
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.container { max-width: 1200px; }
+h3, h4, h5 { font-weight: 700; letter-spacing: -.01em; }
+.text-muted { color: var(--c-muted) !important; }
+
+/* ---------- Barre de navigation ---------- */
+.app-navbar {
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  padding: .6rem 0;
+}
+.app-navbar .navbar-brand { font-weight: 700; color: var(--c-primary); letter-spacing: -.01em; }
+.app-navbar .nav-link {
+  color: var(--c-muted);
+  font-weight: 500;
+  padding: .45rem .8rem;
+  border-radius: 8px;
+}
+.app-navbar .nav-link:hover { color: var(--c-text); background: #f3f4f6; }
+.app-navbar .nav-link.active { color: var(--c-primary); background: rgba(79, 70, 229, .08); }
+.app-navbar .user-chip {
+  background: #f3f4f6;
+  color: var(--c-text);
+  border-radius: 999px;
+  padding: .3rem .8rem;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+/* ---------- Cartes, formulaires ---------- */
+.card {
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.container > form:not(.row) {
+  background: var(--c-surface);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.form-label { font-weight: 500; font-size: .9rem; color: var(--c-text); }
+.form-control, .form-select {
+  border-radius: 10px;
+  border-color: var(--c-border);
+  padding: .6rem .8rem;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 .2rem rgba(79, 70, 229, .15);
+}
+
+/* ---------- Tableaux ---------- */
+.table {
+  background: var(--c-surface);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  --bs-table-striped-bg: #fafafc;
+}
+.table > :not(caption) > * > * { padding: .85rem 1rem; border-bottom-color: var(--c-border); }
+.table thead th {
+  background: #f9fafb;
+  color: var(--c-muted);
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--c-border);
+}
+.table tbody tr:last-child > * { border-bottom: 0; }
+
+/* ---------- Boutons ---------- */
+.btn { border-radius: 10px; font-weight: 500; }
+.btn-primary { background: var(--c-primary); border-color: var(--c-primary); }
+.btn-primary:hover, .btn-primary:focus { background: var(--c-primary-dark); border-color: var(--c-primary-dark); }
+.btn-outline-primary { color: var(--c-primary); border-color: var(--c-primary); }
+.btn-outline-primary:hover { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+.btn-success { background: var(--c-success); border-color: var(--c-success); }
+.btn-success:hover { filter: brightness(.93); background: var(--c-success); border-color: var(--c-success); }
+.btn-outline-danger { color: var(--c-danger); border-color: var(--c-danger); }
+.btn-outline-danger:hover { background: var(--c-danger); border-color: var(--c-danger); color: #fff; }
+.btn-outline-secondary { color: var(--c-muted); border-color: var(--c-border); background: var(--c-surface); }
+.btn-outline-secondary:hover { background: #f3f4f6; color: var(--c-text); border-color: var(--c-border); }
+
+/* ---------- Badges, alertes ---------- */
+.badge { font-weight: 600; padding: .4em .75em; border-radius: 999px; }
+.alert { border: 0; border-radius: var(--radius); box-shadow: var(--shadow); }

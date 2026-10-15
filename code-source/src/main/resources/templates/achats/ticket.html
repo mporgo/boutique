@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ticket de caisse</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+    <style>
+        .ticket { width: 80mm; font-family: "Courier New", monospace; font-size: 13px; }
+        .ligne { display: flex; justify-content: space-between; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #fff !important; }
+            .ticket { width: 100%; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+            @page { margin: 5mm; }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="ticket mx-auto my-3 bg-white p-3 shadow-sm">
+    <div class="text-center">
+        <strong class="fs-6" th:text="${nomBoutique}">Boutique</strong><br>
+        Ticket n° <span th:text="${achat.id}">1</span><br>
+        <span th:text="${achat.dateFormatee}">01/01/2026 10:00</span>
+    </div>
+    <hr>
+
+    <div th:each="l : ${achat.lignes}" class="mb-2">
+        <div th:text="${l.produit.nom}">Produit</div>
+        <div class="ligne">
+            <span th:text="${l.quantite + ' x ' + #numbers.formatDecimal(l.prixUnitaire, 1, 'WHITESPACE', 0, 'POINT')}">2 x 1 500</span>
+            <span th:text="${#numbers.formatDecimal(l.sousTotal, 1, 'WHITESPACE', 0, 'POINT')}">3 000</span>
+        </div>
+    </div>
+    <hr>
+
+    <div class="ligne fw-bold fs-6">
+        <span>TOTAL (FCFA)</span>
+        <span th:text="${#numbers.formatDecimal(achat.total, 1, 'WHITESPACE', 0, 'POINT')}">3 000</span>
+    </div>
+    <hr>
+
+    <div>Caissier : <span th:text="${achat.utilisateur.prenom + ' ' + achat.utilisateur.nom}">Nom</span></div>
+    <div th:if="${achat.client != null}">Client : <span th:text="${achat.client.nom}">Client</span></div>
+
+    <div class="text-center mt-3">Merci de votre visite !</div>
+</div>
+
+<div class="text-center mb-4 no-print">
+    <button type="button" class="btn btn-primary" onclick="window.print()">Imprimer le ticket</button>
+    <a th:href="@{/achats/nouveau}" class="btn btn-success">Nouvel achat</a>
+    <a th:href="@{/achats}" class="btn btn-outline-secondary">Historique</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accès refusé</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center">
+        <h1 class="display-4">403</h1>
+        <p class="lead">Accès refusé : vous n'avez pas les droits nécessaires pour cette page.</p>
+        <a th:href="@{/}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</div>
+</body>
+</html>

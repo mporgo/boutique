@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page introuvable</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center">
+        <h1 class="display-4">404</h1>
+        <p class="lead">Cette page n'existe pas.</p>
+        <a th:href="@{/}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</div>
+</body>
+</html>

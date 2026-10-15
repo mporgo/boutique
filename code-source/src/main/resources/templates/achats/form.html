@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nouvel achat - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <h3 class="mb-3">Nouvel achat</h3>
+
+    <div th:if="${erreur}" class="alert alert-danger" th:text="${erreur}"></div>
+
+    <form th:action="@{/achats}" method="post" id="formAchat">
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Nom du client (facultatif)</label>
+                <input type="text" name="nomClient" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Téléphone (facultatif)</label>
+                <input type="text" name="telephoneClient" class="form-control">
+            </div>
+        </div>
+
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th class="text-end">Prix unitaire</th>
+                <th class="text-end">Sous-total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="lignes"></tbody>
+            <tfoot>
+            <tr>
+                <th colspan="3" class="text-end">TOTAL (FCFA)</th>
+                <th class="text-end fs-5" id="total">0</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+
+        <button type="button" class="btn btn-outline-primary" id="btnAjouter">+ Ajouter un produit</button>
+        <button type="submit" class="btn btn-success">Valider l'achat</button>
+        <a th:href="@{/achats}" class="btn btn-outline-secondary">Annuler</a>
+    </form>
+</div>
+
+<template id="modeleLigne">
+    <tr>
+        <td>
+            <select name="produitId" class="form-select" required>
+                <option value="">-- Choisir un produit --</option>
+                <option th:each="p : ${produits}"
+                        th:value="${p.id}"
+                        th:attr="data-prix=${p.prixVente},data-stock=${p.stock}"
+                        th:disabled="${p.stock <= 0}"
+                        th:text="${p.nom + ' (stock : ' + p.stock + ')'}"></option>
+            </select>
+        </td>
+        <td style="width:120px">
+            <input type="number" name="quantite" class="form-control" min="1" value="1" required>
+        </td>
+        <td class="text-end prix">0</td>
+        <td class="text-end sous">0</td>
+        <td class="text-end">
+            <button type="button" class="btn btn-sm btn-outline-danger btn-retirer">&times;</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    const corps = document.getElementById('lignes');
+    const modele = document.getElementById('modeleLigne');
+    const fmt = n => new Intl.NumberFormat('fr-FR').format(n);
+
+    function ajouterLigne() {
+        corps.appendChild(modele.content.cloneNode(true));
+        recalculer();
+    }
+
+    function recalculer() {
+        let total = 0;
+        corps.querySelectorAll('tr').forEach(tr => {
+            const opt = tr.querySelector('select').selectedOptions[0];
+            const prix = opt && opt.dataset.prix ? parseFloat(opt.dataset.prix) : 0;
+            const qte = parseInt(tr.querySelector('input[name=quantite]').value) || 0;
+            const sous = prix * qte;
+            tr.querySelector('.prix').textContent = fmt(prix);
+            tr.querySelector('.sous').textContent = fmt(sous);
+            total += sous;
+        });
+        document.getElementById('total').textContent = fmt(total);
+    }
+
+    document.getElementById('btnAjouter').addEventListener('click', ajouterLigne);
+    corps.addEventListener('input', recalculer);
+    corps.addEventListener('change', recalculer);
+    corps.addEventListener('click', e => {
+        if (e.target.classList.contains('btn-retirer')) {
+            e.target.closest('tr').remove();
+            recalculer();
+        }
+    });
+
+    ajouterLigne();
+</script>
+</body>
+</html>

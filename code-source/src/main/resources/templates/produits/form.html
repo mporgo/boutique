@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produit - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h3 class="mb-3" th:text="${produit.id == null} ? 'Nouveau produit' : 'Modifier le produit'">Produit</h3>
+
+    <form th:action="@{/produits}" th:object="${produit}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" th:field="*{nom}" class="form-control" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:errors="*{nom}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Catégorie</label>
+            <select name="categorieId" class="form-select">
+                <option value="">-- Aucune --</option>
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.nom}"
+                        th:selected="${produit.categorie != null and produit.categorie.id == c.id}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Prix de vente (FCFA)</label>
+            <input type="number" step="1" min="0" th:field="*{prixVente}" class="form-control" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:errors="*{prixVente}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Coût d'achat unitaire (FCFA)</label>
+            <input type="number" step="1" min="0" th:field="*{prixAchatMoyen}" class="form-control" th:errorclass="is-invalid">
+            <div class="form-text">Sert au calcul du bénéfice. Recalculé automatiquement à chaque livraison (coût moyen pondéré).</div>
+        </div>
+
+        <div class="row">
+            <div class="col mb-3">
+                <label class="form-label">Stock</label>
+                <input type="number" min="0" th:field="*{stock}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{stock}"></div>
+            </div>
+            <div class="col mb-3">
+                <label class="form-label">Seuil d'alerte</label>
+                <input type="number" min="0" th:field="*{seuilAlerte}" class="form-control" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{seuilAlerte}"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a th:href="@{/produits}" class="btn btn-outline-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

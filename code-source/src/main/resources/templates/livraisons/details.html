@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Détails de la livraison - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Livraison n° <span th:text="${livraison.id}">1</span></h3>
+        <div>
+            <a th:href="@{/livraisons/{id}/bon(id=${livraison.id})}" class="btn btn-primary">Bon de livraison</a>
+            <a th:href="@{/historique}" class="btn btn-outline-secondary">Retour à l'historique</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="text-muted small">Date</div>
+                    <div class="fw-semibold" th:text="${livraison.dateFormatee}">01/01/2026 10:00</div>
+                </div>
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="text-muted small">Grossiste</div>
+                    <div class="fw-semibold" th:text="${livraison.grossiste.nom}">Grossiste</div>
+                    <div class="text-muted small" th:if="${livraison.grossiste.telephone != null}"
+                         th:text="${livraison.grossiste.telephone}">70 00 00 00</div>
+                </div>
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="text-muted small">Enregistrée par</div>
+                    <div class="fw-semibold"
+                         th:text="${livraison.utilisateur.prenom + ' ' + livraison.utilisateur.nom}">Nom</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-muted small">Total (FCFA)</div>
+                    <div class="fw-bold fs-5"
+                         th:text="${#numbers.formatDecimal(livraison.total, 1, 'WHITESPACE', 0, 'POINT')}">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table align-middle">
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th class="text-center">Quantité</th>
+            <th class="text-end">Prix d'achat</th>
+            <th class="text-end">Sous-total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="l : ${livraison.lignes}">
+            <td th:text="${l.produit.nom}">Produit</td>
+            <td class="text-center" th:text="${l.quantite}">10</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(l.prixAchat, 1, 'WHITESPACE', 0, 'POINT')}">800</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(l.sousTotal, 1, 'WHITESPACE', 0, 'POINT')}">8 000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

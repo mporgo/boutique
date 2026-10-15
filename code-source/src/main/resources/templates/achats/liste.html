@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Achats - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Historique des achats</h3>
+        <a th:href="@{/achats/nouveau}" class="btn btn-success">+ Nouvel achat</a>
+    </div>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Caissier</th>
+            <th class="text-center">Articles</th>
+            <th class="text-end">Total (FCFA)</th>
+            <th class="text-end">Ticket</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${achats}">
+            <td th:text="${a.id}">1</td>
+            <td th:text="${a.dateFormatee}">01/01/2026 10:00</td>
+            <td th:text="${a.client != null} ? ${a.client.nom} : '-'">-</td>
+            <td th:text="${a.utilisateur.identifiant}">admin</td>
+            <td class="text-center" th:text="${#lists.size(a.lignes)}">2</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(a.total, 1, 'WHITESPACE', 0, 'POINT')}">3 000</td>
+            <td class="text-end">
+                <a th:href="@{/achats/{id}/ticket(id=${a.id})}" class="btn btn-sm btn-outline-primary">Voir / imprimer</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(achats)}">
+            <td colspan="7" class="text-center text-muted">Aucun achat enregistré.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

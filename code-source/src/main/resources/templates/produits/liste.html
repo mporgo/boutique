@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produits - Boutique</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container mt-4">
+    <h3 class="mb-3">Produits</h3>
+
+    <div th:if="${succes}" class="alert alert-success" th:text="${succes}"></div>
+    <div th:if="${erreur}" class="alert alert-danger" th:text="${erreur}"></div>
+
+    <form class="row g-2 mb-3" th:action="@{/produits}" method="get">
+        <div class="col-sm-6 col-md-4">
+            <input type="text" name="q" th:value="${q}" class="form-control"
+                   placeholder="Rechercher un produit par nom">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <a th:href="@{/produits}" class="btn btn-outline-secondary">Réinitialiser</a>
+        </div>
+        <div class="col text-end">
+            <a th:href="@{/produits/nouveau}" class="btn btn-success">+ Nouveau produit</a>
+        </div>
+    </form>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th class="text-end">Prix de vente (FCFA)</th>
+            <th class="text-center">Stock</th>
+            <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${produits}">
+            <td th:text="${p.nom}">Riz</td>
+            <td th:text="${p.categorie != null} ? ${p.categorie.nom} : '-'">Céréales</td>
+            <td class="text-end" th:text="${#numbers.formatDecimal(p.prixVente, 1, 'WHITESPACE', 0, 'POINT')}">1 500</td>
+            <td class="text-center">
+                <span class="badge" th:classappend="${p.stock <= p.seuilAlerte} ? 'bg-danger' : 'bg-success'"
+                      th:text="${p.stock}">10</span>
+            </td>
+            <td class="text-end">
+                <a th:href="@{/produits/{id}/modifier(id=${p.id})}" class="btn btn-sm btn-outline-primary">Modifier</a>
+                <form th:action="@{/produits/{id}/supprimer(id=${p.id})}" method="post" class="d-inline"
+                      onsubmit="return confirm('Supprimer ce produit ?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(produits)}">
+            <td colspan="5" class="text-center text-muted">Aucun produit trouvé.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
